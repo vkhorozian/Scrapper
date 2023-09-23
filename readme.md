@@ -1,67 +1,58 @@
+# Python Web Scraping using Beautiful Soup
 
-# SCRIPT PART 1
+## Project Overview
 
-
-<br>
-
-### Link example: https://www.superpages.com/search?search_terms=general+contractors&geo_location_terms=07657
-
-<br>
+This project is a web scraper that scrapes Superpages.com for website urls. The scraper is built using Python and Beautiful Soup. The scraper is able to scrape the website urls based on the miles radius they would like to search from their location.
 
 
+--------------
+## Notebooks
+- [JUPYTER LAB NOTEBOOK LINK](./scraper.ipynb)
+- [Project Overview](./README.md)
+---------
 
+## Getting Started - Prerequisites
 ---
-### Request this site then look for this in the html that was just pulled down
+### ​You must have Python 3 installed:
 
 ```
-<a class="weblink-button" href="http://johansengeneralcontracting.com" rel="nofollow noopener" target="_blank" </a>
-
-grep :  href="http://johansengeneralcontracting.com"
+python3 --version
 ```
 
-
-Create a list of all the links that are found in the html
-
-```python
-# create a list of all the links that are found in the html
-links = soup.find_all('a', class_='weblink-button')
+### You must have Anaconda installed:
+```
+$ anaconda --version
 ```
 
-### Loop through the list of links and extract the URL embedded into href tag
-
-```python
-# Loop through the list of links and extract the URL embedded into href tag
-for link in links:
-    print(link['href'])
+### Install Environmnet:
+```
+conda create -n <env_name> python=3.10 anaconda
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Extract the URL embedded into href tag and do a new Request on that new link
-
+### Clone/Run Repository 
+```
+git clone git@github.com:vkhorozian/Scrapper.git
 ```
 
-<a href="mailto:servpro9280@optonline.net">servpro9280@optonline.net</a>
-
+### Activate Environment
+```
+conda activate <env_name>
 ```
 
+### Install Dependencies
+- Please make sure you are in your intended activate environment before running this command
+```
+pip install -r requirements.txt
+```
 
+--- 
+## Built With
 
+- [![Python 3.7.13](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)]([https://www.python.org/downloads/release/python-3713/)
+[![Python](https://img.shields.io/badge/Python-3.7.13-blue)](https://www.python.org/downloads/release/python-3713/) - Programming Language
+- [![Pandas](https://img.shields.io/badge/Pandas-2C2D72?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/docs/#) - Data maniupulation library
+- [![Numpy](https://img.shields.io/badge/Numpy-777BB4?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/) - Multi-dimensional array library
+
+## Authors
+- **Varoujan John Khorozian** - [LinkedIn](https://www.linkedin.com/in/varoujan-khorozian/) | [Github](https://github.com/vkhorozian)
+- **Hovsep Khourbouchian** - [LinkedIn](https://www.linkedin.com/in/hovsep-kourbouchian/) | [Github](https://github.com/hosepeeg)
