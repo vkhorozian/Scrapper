@@ -25,6 +25,7 @@ df = df['Link Text'].tolist()
 # Create a Streamlit dropdown with the names
 selected_catagory = st.selectbox('Select a category.', df)
 
+
 # Display the selected name
 st.write('Selected name:', selected_catagory)
 
@@ -48,55 +49,84 @@ else:
 # RADIUS SECTION (Radio Buttons)
 
 st.write('Please select a radius:')
-radius = ['1 Mile', '5 Miles', '10 Miles']
+radius = ['1 Mile', '5 Miles', '10 Miles', '15 Miles', '20 Miles']
 selected_radius = st.radio('Select an option', radius)
 
 if(selected_radius == '1 Mile'):
     pages = 1
 elif(selected_radius == '5 Miles'):
     pages = 5
-else:
+elif(selected_radius == '10 Miles'):
     pages = 10
+elif(selected_radius == '15 Miles'):
+    pages = 15
+else:
+    pages = 20
 
 st.write('You selected:', selected_radius)
 st.write('You selected:', pages)
 
-def embed_google_maps():
-    html_string = '''
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38785.70341915034!2d-74.00661089999999!3d40.7127753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2596b09e6cb75%3A0x62ed6fdb1164e0a7!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1628525763669!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-    '''
-    return html_string
 
-def main():
-    st.title("My Streamlit App with Google Maps")
-    st.markdown("Here's a map of New York City:")
-    html_code = embed_google_maps()
-    html(html_code, width=700, height=500)
+# def embed_google_maps():
+#     html_string = '''
+#     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38785.70341915034!2d-74.00661089999999!3d40.7127753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2596b09e6cb75%3A0x62ed6fdb1164e0a7!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1628525763669!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+#     '''
+#     return html_string
+# 
+# def main():
+#     st.title("My Streamlit App with Google Maps")
+#     st.markdown("Here's a map of New York City:")
+#     html_code = embed_google_maps()
+#     html(html_code, width=700, height=500)
+# 
+# if __name__ == "__main__":
+#     main()
 
-if __name__ == "__main__":
-    main()
-
+if pages == 1:
 
 # Read the CSV file into a DataFrame
-Super_Pages_URL = f"https://www.superpages.com/search?search_terms={selected_catagory}&geo_location_terms={zip_code}&page={pages}"
+    Super_Pages_URL = f"https://www.superpages.com/search?search_terms={selected_catagory}&geo_location_terms={zip_code}&page={pages}"
+    
+    page = requests.get(Super_Pages_URL)
 
+    # Define the pattern you want to search for
+    #pattern = r'href="http://.*?"'
+    pattern = r'href="(http://.*?)"'
+    
+    # Search for the pattern in the page text
+    matches = re.findall(pattern, page.text)
 
-page = requests.get(Super_Pages_URL)
+else:
+    
+    # Create a loop that will go through the pages and scrape the data just like the previous example
+    
 
+    all_matches = []
 
-# Define the pattern you want to search for
-#pattern = r'href="http://.*?"'
+    for i in range(1, pages + 1):
+        Super_Pages_URL = f"https://www.superpages.com/search?search_terms={selected_catagory}&geo_location_terms={zip_code}&page={i}"
+        page = requests.get(Super_Pages_URL)
+        pattern = r'href="(http://.*?)"'
+        matches = re.findall(pattern, page.text)
+        all_matches.extend(matches)
 
-pattern = r'href="(http://.*?)"'
+    df = pd.DataFrame({'Matches': all_matches})
+    selected_catagory_no_space = selected_catagory.replace(' ', '_')
+    df.to_csv(f'{selected_catagory_no_space}.csv', index=False)
 
-# Search for the pattern in the page text
-matches = re.findall(pattern, page.text)
-
-# Print the found matches
+        
+    
+    # use the super pages url and take the number givien by pages and iterate through the pages and scrape the data 
+    # store all the data into a data frame 
+    # print the data frame using stream lit
+    
+    
+    
 
 # now take this list of urls and insert them into a text file
 # now we need to loop through the text file and scrape the data from each url
-#print(webList[0]) # href="http://www.bvhelectric.com"
+# Print the found matches
+# print(webList[0]) # href="http://www.bvhelectric.com"
 
 # Create a button
 if st.button('Go'):
